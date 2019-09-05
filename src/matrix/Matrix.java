@@ -21,14 +21,22 @@ public class Matrix implements matrixInterface {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Matrix m = new Matrix(3,3);
+        /*Matrix m = new Matrix(3,3);
         m.fill();
         System.out.println(m.printMatrix());
         Matrix m1 = new Matrix(3,3);
         m1.fill();
         
-        Matrix m2 = m.add(m1);
-        System.out.println(m2.printMatrix());
+        Matrix m2 = m.mult(m1);
+        System.out.println(m2.printMatrix());*/
+        Matrix A = new Matrix(2,3);
+        Matrix B = new Matrix(3,4);
+        A.fill();
+        B.fill();
+        
+        Matrix C = A.mult(B);
+        System.out.println(C.printMatrix());
+        
     }
     
     public Matrix()
@@ -90,14 +98,42 @@ public class Matrix implements matrixInterface {
     public Matrix subtract(Matrix m)
     {   
         Matrix diff = new Matrix(row, col);
+        if(row == m.getRow() && col == m.getCol())
+        {
+            for(int r = 0; r < row; r++)
+            {
+                for(int c = 0; c < col; c++)
+                {
+                    diff.setVal(r,c, (mat[r][c] - m.getVal(r,c)));
+                }
+            }
+        }
+        else
+            System.out.println("You cannot subtract matrices of different size");
         
         return diff;
     }
     
     public Matrix mult(Matrix m)
     {
-        Matrix product = new Matrix(col, m.getRow());
-        
+        Matrix product = new Matrix(row, m.getCol());
+        if(col == m.getRow())
+        {
+            for(int r = 0; r < product.getRow(); r++)
+            {
+                for(int c = 0; c < product.getCol(); c++)
+                {
+                    int val = 0;
+                    for(int x = 0; x < col; x++)
+                    {
+                        val += mat[r][x] * m.getVal(x, c);
+                    }
+                    product.setVal(r,c, val);
+                }
+            }
+        }
+        else
+            System.out.println("You cannot multiply matrices whose inner sizes are different");
         return product;
     }
     
